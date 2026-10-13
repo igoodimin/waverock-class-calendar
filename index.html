@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>웨이브락 강습달력</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="css/calendar.css">
+<link rel="stylesheet" href="css/controls.css">
+</head>
+<body>
+
+<section class="management" aria-label="공동 달력 관리">
+  <div class="management-row"><strong>웨이브락 강습달력</strong>
+    <label>연도 <input id="yearInput" type="number" min="1900" max="2100" step="1" value="2026" onchange="changeYear(this.value)"></label>
+    <button type="button" onclick="openCourseManager()">강습 종류 관리</button>
+    <button type="button" onclick="refreshCalendar()">새로고침</button>
+  </div>
+  <p id="syncStatus" role="status" aria-live="polite">불러오는 중…</p>
+</section>
+<!-- CLASS TYPE TABS -->
+<div class="class-tabs"></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="tb-group">
+    <label>지점</label>
+    <button class="branch-btn active" id="bbtn-0" onclick="switchBranch(0)">남천점</button>
+    <button class="branch-btn" id="bbtn-1" onclick="switchBranch(1)">서면점</button>
+    <button class="branch-btn" id="bbtn-2" onclick="switchBranch(2)">부산대점</button>
+  </div>
+  <div class="sep"></div>
+  <div class="page-nav">
+    <button class="nav-arrow" onclick="changePage(-1)">&#8592;</button>
+    <span class="page-label" id="pageLabel"></span>
+    <button class="nav-arrow" onclick="changePage(1)">&#8594;</button>
+  </div>
+  <div class="sep"></div>
+  <button class="tb-btn btn-theme" onclick="openModal(null)">＋ 강습 추가</button>
+  <div class="sep"></div>
+  <div class="view-mode-group">
+    <label style="font-size:0.72rem;color:#555;font-weight:700;">미리보기</label>
+    <button class="view-mode-btn active" id="vmbtn-pdf" onclick="setViewMode('pdf')">📄 PDF</button>
+    <button class="view-mode-btn" id="vmbtn-jpg" onclick="setViewMode('jpg')">🖼 JPG</button>
+  </div>
+  <div class="sep"></div>
+  <button class="tb-btn btn-gray" id="pdfBtn" onclick="downloadPDF()">⬇ PDF 저장</button>
+  <button class="tb-btn btn-gray" id="jpgBtn" onclick="downloadJPG()">⬇ 이미지 저장</button>
+  <div class="sep"></div>
+  <span class="update-label">최근 수정 <span id="lastUpdated">—</span></span>
+</div>
+
+<!-- A4 PAGE -->
+<div class="a4-page" id="a4page">
+  <div class="month-half" id="half0"></div>
+  <div class="bar" id="bar-mid"></div>
+  <div class="month-half" id="half1"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <h3>강습 추가</h3>
+    <label>날짜</label>
+    <input type="date" id="inputDate">
+    <label>회차명</label>
+    <div class="time-presets">
+      <button type="button" class="time-preset-btn label-preset-btn" onclick="setLabel('1회차')">1회차</button>
+      <button type="button" class="time-preset-btn label-preset-btn" onclick="setLabel('2회차')">2회차</button>
+      <button type="button" class="time-preset-btn label-preset-btn" onclick="setLabel('3회차')">3회차</button>
+      <button type="button" class="time-preset-btn label-preset-btn" onclick="setLabel('4회차')">4회차</button>
+      <button type="button" class="time-preset-btn label-preset-btn" onclick="setLabel('원데이')">원데이</button>
+    </div>
+    <input type="text" id="inputLabel" placeholder="예: 1회차, 원데이">
+    <label>시간</label>
+    <div class="time-presets">
+      <button type="button" class="time-preset-btn" onclick="setTime('14:00','14:50')">14:00-14:50</button>
+      <button type="button" class="time-preset-btn" onclick="setTime('18:00','18:50')">18:00-18:50</button>
+      <button type="button" class="time-preset-btn" onclick="setTime('19:00','19:50')">19:00-19:50</button>
+      <button type="button" class="time-preset-btn" onclick="setTime('20:00','20:50')">20:00-20:50</button>
+    </div>
+    <div class="time-row">
+      <div><label>시작</label><input type="time" id="inputStart" value="14:00"></div>
+      <div><label>종료</label><input type="time" id="inputEnd" value="14:50"></div>
+    </div>
+    <div id="colorSection">
+      <label>색상 (기초 전용)</label>
+      <div class="color-picker" id="colorPicker">
+        <div class="color-dot bc1 selected" data-c="bc1" onclick="selectColor('bc1')"></div>
+        <div class="color-dot bc2" data-c="bc2" onclick="selectColor('bc2')"></div>
+        <div class="color-dot bc3" data-c="bc3" onclick="selectColor('bc3')"></div>
+        <div class="color-dot bc4" data-c="bc4" onclick="selectColor('bc4')"></div>
+        <div class="color-dot bc5" data-c="bc5" onclick="selectColor('bc5')"></div>
+        <div class="color-dot bc6" data-c="bc6" onclick="selectColor('bc6')"></div>
+      </div>
+    </div>
+    <div id="monoColorSection" style="display:none">
+      <label>색상 변형</label>
+      <div class="color-picker" id="monoColorPicker"></div>
+    </div>
+    <div class="apply-row">
+      <input type="checkbox" id="applyWeekly">
+      <label for="applyWeekly" style="margin:0;font-weight:500">같은 요일 이번 달 매주 반복</label>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeModal()">취소</button>
+      <button class="modal-delete" id="modalDeleteBtn" onclick="deleteFromModal()" style="display:none">🗑 삭제</button>
+      <button class="modal-confirm" id="modalConfirmBtn" onclick="confirmLesson()">추가</button>
+    </div>
+  </div>
+</div>
+
+<div class="save-toast" id="saveToast"><span class="save-toast-dot"></span> 자동 저장됨</div>
+
+<dialog id="courseDialog">
+  <form id="courseForm">
+    <h2>강습 종류 관리</h2>
+    <label>강습 선택 <select id="courseSelect" onchange="selectCourse(this.value)"></select></label>
+    <label>출력 제목 <input id="courseName" required maxlength="80" placeholder="예: 지구력 트레이닝 강습 일정"></label>
+    <label>테마 색상 <input id="courseTheme" type="color" value="#ff7700"></label>
+    <label><input id="courseMono" type="checkbox"> 단색 배지 (해제하면 기초 강습의 다색 배지)</label>
+    <label><input id="courseActive" type="checkbox" checked> 활성화</label>
+    <p>비활성 강습은 탭에서 숨겨지며, 기존 일정은 보존됩니다. 다시 활성화할 수 있습니다.</p>
+    <div class="management-row"><button type="button" onclick="document.getElementById('courseDialog').close()">닫기</button><button id="courseSave" type="submit">저장</button></div>
+  </form>
+</dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="js/defaults.js"></script>
+<script src="js/calendar-dates.js"></script>
+<script src="js/store.js"></script>
+<script src="js/calendar-view.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+/* 관리 UI 전용. calendar.css의 출력 치수와 선택자는 변경하지 않습니다. */
+.management { width:100%; max-width:794px; background:#fff; border-radius:10px; padding:14px 16px; }
+.management-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+.management button, .management input, #courseDialog input, #courseDialog select, #courseDialog button { font:inherit; padding:6px 10px; border:1px solid #ccc; border-radius:6px; }
+.management button, #courseDialog button { cursor:pointer; background:#f4f4f4; }
+#yearInput { width:90px; }
+#syncStatus { font-size:12px; margin-top:8px; color:#555; }
+#syncStatus[data-state="error"] { color:#b42318; }
+#syncStatus[data-state="ready"] { color:#187443; }
+#courseDialog { margin:auto; padding:24px; border:0; border-radius:12px; width:min(480px, 92vw); }
+#courseDialog::backdrop { background:#0008; }
+#courseForm { display:grid; gap:14px; }
+#courseForm label { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+#courseName, #courseSelect { width:100%; }
+#courseForm p { font-size:13px; color:#666; }
+button:disabled { cursor:wait; opacity:.5; }
+@media print { .management, #courseDialog { display:none !important; } }
