@@ -71,7 +71,7 @@ body { display: block; padding: 0; background: var(--wr-bg, #f5f5f5); }
   .cc-side .toolbar { display: contents; }
   .cc-side .cc-sec, .cc-side > .cc-sec:first-child { padding: 16px 0; border-top: 1px solid var(--wr-line, #e2e2e2); }
 }
-@media (max-width: 760px) { .cc-side { padding: 0 20px; } }
+@media (max-width: 760px) { .cc-side { padding: 0 20px; } .cc-main { order: -1; } }
 @media print {
   .wr-header, .cc-side { display: none !important; }
   .cc-layout, .cc-main { display: block !important; padding: 0 !important; }
