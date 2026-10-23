@@ -15,3 +15,34 @@
 #courseForm p { font-size:13px; color:#666; }
 button:disabled { cursor:wait; opacity:.5; }
 @media print { .management, #courseDialog { display:none !important; } }
+
+/* ── 디자인 툴 공통 UI (ui.css 토큰). 출력 대지 .a4-page 와 강습 탭 색상은 건드리지 않습니다. ── */
+body { background: var(--wr-bg, #f5f5f5); }
+.management, .class-tabs, .toolbar, .modal, #courseDialog, .save-toast { font-family: var(--wr-font, Pretendard, sans-serif); }
+.management button, .management input, .toolbar button, .toolbar input, .modal button, .modal input, .modal select, #courseDialog input, #courseDialog select, #courseDialog button { font-family: inherit; }
+.management, .class-tabs, .toolbar { border: 1px solid var(--wr-line, #e2e2e2); border-radius: 12px; box-shadow: none; background: var(--wr-surface, #fff); }
+.management-row strong { font-size: 15px; color: var(--wr-ink, #222); }
+.management button, .management input, #courseDialog input, #courseDialog select, #courseDialog button { border-color: var(--wr-line, #e2e2e2); border-radius: var(--wr-radius, 8px); }
+.management button, #courseDialog button, .btn-gray { background: var(--wr-soft, #ececec); color: var(--wr-ink, #222); border-color: var(--wr-soft, #ececec); }
+.management button:hover, #courseDialog button:hover, .btn-gray:hover { background: var(--wr-soft-hover, #e2e2e2); }
+#courseSave { background: var(--wr-accent, #222); border-color: var(--wr-accent, #222); color: var(--wr-accent-ink, #fff); }
+.toolbar label, .modal label, .update-label { color: var(--wr-sub, #6b6b6b); }
+.toolbar input, .modal input, .modal select { border-color: var(--wr-line, #e2e2e2); border-radius: var(--wr-radius, 8px); }
+.modal input:focus, .modal select:focus { border-color: var(--wr-accent, #222); }
+.page-label, .update-label span, .modal h3 { color: var(--wr-ink, #222); }
+.sep { background: var(--wr-line, #e2e2e2); }
+.tb-btn, .modal-cancel, .modal-confirm, .modal-delete { border-radius: var(--wr-radius, 8px); }
+.btn-theme, .modal-confirm { background: var(--wr-accent, #222); color: var(--wr-accent-ink, #fff); }
+.branch-btn, .view-mode-btn, .time-preset-btn { background: var(--wr-soft, #ececec); color: var(--wr-sub, #6b6b6b); border-color: var(--wr-soft, #ececec); }
+.branch-btn:hover, .view-mode-btn:not(.active):hover, .time-preset-btn:hover, .nav-arrow:hover { border-color: var(--wr-ink, #222); color: var(--wr-ink, #222); background: var(--wr-surface, #fff); }
+.branch-btn.active, .view-mode-btn.active, .time-preset-btn.active { background: var(--wr-accent, #222); color: var(--wr-accent-ink, #fff); border-color: var(--wr-accent, #222); }
+.nav-arrow { border-color: var(--wr-line, #e2e2e2); }
+.modal-cancel { border-color: var(--wr-line, #e2e2e2); color: var(--wr-ink, #222); }
+.modal-delete { background: var(--wr-danger-soft, #fbecea); color: var(--wr-danger, #b42318); }
+.modal { border-radius: 12px; }
+.management .wr-home { padding: 5px 10px; }
+@media (max-width: 600px) {
+  body { padding: 16px 12px 40px; }
+  .toolbar { gap: 8px; }
+  .toolbar .sep { display: none; }
+}
