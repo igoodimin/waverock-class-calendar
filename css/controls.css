@@ -16,33 +16,64 @@
 button:disabled { cursor:wait; opacity:.5; }
 @media print { .management, #courseDialog { display:none !important; } }
 
-/* ── 디자인 툴 공통 UI (ui.css 토큰). 출력 대지 .a4-page 와 강습 탭 색상은 건드리지 않습니다. ── */
-body { background: var(--wr-bg, #f5f5f5); }
-.management, .class-tabs, .toolbar, .modal, #courseDialog, .save-toast { font-family: var(--wr-font, Pretendard, sans-serif); }
-.management button, .management input, .toolbar button, .toolbar input, .modal button, .modal input, .modal select, #courseDialog input, #courseDialog select, #courseDialog button { font-family: inherit; }
-.management, .class-tabs, .toolbar { border: 1px solid var(--wr-line, #e2e2e2); border-radius: 12px; box-shadow: none; background: var(--wr-surface, #fff); }
-.management-row strong { font-size: 15px; color: var(--wr-ink, #222); }
-.management button, .management input, #courseDialog input, #courseDialog select, #courseDialog button { border-color: var(--wr-line, #e2e2e2); border-radius: var(--wr-radius, 8px); }
-.management button, #courseDialog button, .btn-gray { background: var(--wr-soft, #ececec); color: var(--wr-ink, #222); border-color: var(--wr-soft, #ececec); }
-.management button:hover, #courseDialog button:hover, .btn-gray:hover { background: var(--wr-soft-hover, #e2e2e2); }
-#courseSave { background: var(--wr-accent, #222); border-color: var(--wr-accent, #222); color: var(--wr-accent-ink, #fff); }
-.toolbar label, .modal label, .update-label { color: var(--wr-sub, #6b6b6b); }
-.toolbar input, .modal input, .modal select { border-color: var(--wr-line, #e2e2e2); border-radius: var(--wr-radius, 8px); }
-.modal input:focus, .modal select:focus { border-color: var(--wr-accent, #222); }
-.page-label, .update-label span, .modal h3 { color: var(--wr-ink, #222); }
-.sep { background: var(--wr-line, #e2e2e2); }
-.tb-btn, .modal-cancel, .modal-confirm, .modal-delete { border-radius: var(--wr-radius, 8px); }
-.btn-theme, .modal-confirm { background: var(--wr-accent, #222); color: var(--wr-accent-ink, #fff); }
-.branch-btn, .view-mode-btn, .time-preset-btn { background: var(--wr-soft, #ececec); color: var(--wr-sub, #6b6b6b); border-color: var(--wr-soft, #ececec); }
-.branch-btn:hover, .view-mode-btn:not(.active):hover, .time-preset-btn:hover, .nav-arrow:hover { border-color: var(--wr-ink, #222); color: var(--wr-ink, #222); background: var(--wr-surface, #fff); }
-.branch-btn.active, .view-mode-btn.active, .time-preset-btn.active { background: var(--wr-accent, #222); color: var(--wr-accent-ink, #fff); border-color: var(--wr-accent, #222); }
-.nav-arrow { border-color: var(--wr-line, #e2e2e2); }
-.modal-cancel { border-color: var(--wr-line, #e2e2e2); color: var(--wr-ink, #222); }
+/* ── 디자인 툴 공통 레이아웃 (세팅 달력 기준, ui.css 토큰). 출력 대지 .a4-page 내부와 강습 탭 색상은 건드리지 않습니다. ── */
+body { display: block; padding: 0; background: var(--wr-bg, #f5f5f5); }
+.cc-layout { display: grid; grid-template-columns: var(--wr-sidebar-w, 280px) minmax(0, 1fr); gap: 28px; padding: 32px; }
+.cc-side { min-width: 0; padding-right: 18px; border-right: 1px solid var(--wr-line, #e2e2e2); font-family: var(--wr-font, Pretendard, sans-serif); color: var(--wr-ink, #222); font-weight: 500; }
+.cc-main { min-width: 0; display: flex; justify-content: center; align-items: flex-start; }
+
+/* 사이드바 안의 기존 상자들은 테두리 없이 구역으로 */
+.cc-side .management, .cc-side .class-tabs, .cc-side .toolbar { max-width: none; width: auto; border-radius: 0; background: none; box-shadow: none; display: block; }
+.cc-side .class-tabs, .cc-side .toolbar { padding: 0; border: 0; }
+.cc-side .management { padding: 0 0 20px; border: 0; }
+.cc-sec { padding: 20px 0; border-top: 1px solid var(--wr-line, #e2e2e2); }
+.cc-side > .cc-sec:first-child { border-top: 0; padding-top: 0; }
+.cc-sec h2 { margin: 0 0 12px; font-size: 15px; font-weight: 700; }
+.cc-side .class-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.cc-side .tb-group, .cc-side .view-mode-group, .cc-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 6px; }
+.cc-side .page-nav { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 8px; padding: 0 4px; min-height: var(--wr-control-h, 44px); background: var(--wr-surface, #fff); border: 1px solid var(--wr-line, #e2e2e2); border-radius: var(--wr-radius, 8px); }
+.cc-side .page-label { font-size: 15px; }
+.management-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+#syncStatus { margin-top: 8px; line-height: 1.6; }
+.update-label { display: block; margin-top: 10px; font-size: 12px; }
+
+/* 입력칸·버튼: 세팅 달력과 같은 크기와 모양 */
+.cc-side input, .cc-side button, #courseDialog input, #courseDialog select, #courseDialog button, .modal input, .modal select, .modal button { font-family: var(--wr-font, Pretendard, sans-serif); }
+.cc-side input[type=number], #courseDialog input:not([type=checkbox]):not([type=color]), #courseDialog select, .modal input:not([type=checkbox]), .modal select { min-height: var(--wr-control-h, 44px); padding: 0 12px; border: 1px solid var(--wr-line, #e2e2e2); border-radius: var(--wr-radius, 8px); background: var(--wr-surface, #fff); font-size: 14px; color: var(--wr-ink, #222); }
+#yearInput { width: 100%; }
+.cc-side button, #courseDialog button, .modal-actions button { min-height: var(--wr-control-h, 44px); padding: 0 14px; border: 0; border-radius: var(--wr-radius, 8px); background: var(--wr-soft, #ececec); color: var(--wr-ink, #222); font-size: 14px; font-weight: 700; cursor: pointer; transition: background .15s; }
+.cc-side button:hover, #courseDialog button:hover, .modal-cancel:hover { background: var(--wr-soft-hover, #e2e2e2); color: var(--wr-ink, #222); filter: none; }
+.cc-side .cc-wide { display: block; width: 100%; margin-top: 8px; }
+.cc-side .cc-wide:first-of-type { margin-top: 0; }
+.class-tabs + .cc-wide { margin-top: 0; }
+.cc-side .btn-theme, .cc-side .branch-btn.active, .cc-side .view-mode-btn.active, #courseSave, .modal-confirm, .time-preset-btn.active { background: var(--wr-accent, #222); color: var(--wr-accent-ink, #fff); border-color: var(--wr-accent, #222); }
+.cc-side .btn-theme:hover, .cc-side .branch-btn.active:hover, .cc-side .view-mode-btn.active:hover, #courseSave:hover, .modal-confirm:hover { background: var(--wr-accent, #222); color: var(--wr-accent-ink, #fff); opacity: .88; }
+.cc-side .nav-arrow { width: 36px; min-height: 36px; height: 36px; padding: 0; border: 0; border-radius: var(--wr-radius, 8px); background: none; font-size: 16px; }
+.cc-side .nav-arrow:hover { background: var(--wr-soft, #ececec); }
+.cc-side .class-tab { min-height: 36px; padding: 0 12px; border-radius: var(--wr-radius, 8px); font-family: var(--wr-font, Pretendard, sans-serif); font-size: 13px; }
+.cc-side .class-tab:not(.active) { background: var(--wr-soft, #ececec); border-color: var(--wr-soft, #ececec); color: var(--wr-sub, #6b6b6b); }
+.cc-side .class-tab-label { display: none; }
+.time-preset-btn { min-height: 36px; border-radius: var(--wr-radius, 8px); background: var(--wr-soft, #ececec); border-color: var(--wr-soft, #ececec); color: var(--wr-ink, #222); font-family: var(--wr-font, Pretendard, sans-serif); }
+.time-preset-btn:hover { border-color: var(--wr-ink, #222); color: var(--wr-ink, #222); background: var(--wr-surface, #fff); }
+.modal { border-radius: 12px; font-family: var(--wr-font, Pretendard, sans-serif); }
+.modal h3 { color: var(--wr-ink, #222); }
+.modal label, .apply-row { color: var(--wr-sub, #6b6b6b); }
+.modal input:focus, .modal select:focus { border-color: var(--wr-accent, #222); outline: none; }
+.modal-cancel { border: 1px solid var(--wr-line, #e2e2e2); background: var(--wr-surface, #fff); color: var(--wr-ink, #222); }
 .modal-delete { background: var(--wr-danger-soft, #fbecea); color: var(--wr-danger, #b42318); }
-.modal { border-radius: 12px; }
-.management .wr-home { padding: 5px 10px; }
-@media (max-width: 600px) {
-  body { padding: 16px 12px 40px; }
-  .toolbar { gap: 8px; }
-  .toolbar .sep { display: none; }
+.save-toast { font-family: var(--wr-font, Pretendard, sans-serif); }
+
+/* A4 대지는 화면 폭으로 크기가 정해지고, 이미지 저장도 그 크기를 따릅니다.
+   대지 폭(794px)이 줄지 않도록 화면이 좁으면 사이드바를 위로 올립니다. */
+@media (max-width: 1179px) {
+  .cc-layout { display: flex; flex-direction: column; gap: 24px; padding: 24px 0; }
+  .cc-side { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); column-gap: 28px; padding: 0 24px; border-right: 0; }
+  .cc-side .toolbar { display: contents; }
+  .cc-side .cc-sec, .cc-side > .cc-sec:first-child { padding: 16px 0; border-top: 1px solid var(--wr-line, #e2e2e2); }
+}
+@media (max-width: 760px) { .cc-side { padding: 0 20px; } }
+@media print {
+  .wr-header, .cc-side { display: none !important; }
+  .cc-layout, .cc-main { display: block !important; padding: 0 !important; }
+  .cc-main .a4-page { width: 210mm !important; }
 }

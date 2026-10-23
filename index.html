@@ -13,51 +13,74 @@
 </head>
 <body>
 
-<section class="management" aria-label="공동 달력 관리">
-  <div class="management-row"><a class="wr-home" href="https://igoodimin.github.io/waverock-design-tools/">← 디자인 툴</a><strong>웨이브락 강습달력</strong>
-    <label>연도 <input id="yearInput" type="number" min="1900" max="2100" step="1" value="2026" onchange="changeYear(this.value)"></label>
-    <button type="button" onclick="openCourseManager()">강습 종류 관리</button>
-    <button type="button" onclick="refreshCalendar()">새로고침</button>
-  </div>
-  <p id="syncStatus" role="status" aria-live="polite">불러오는 중…</p>
-</section>
-<!-- CLASS TYPE TABS -->
-<div class="class-tabs"></div>
+<header class="wr-header">
+  <a class="wr-home" href="https://igoodimin.github.io/waverock-design-tools/">← 디자인 툴</a>
+  <h1>강습 달력</h1>
+</header>
 
-<!-- TOOLBAR -->
-<div class="toolbar">
-  <div class="tb-group">
-    <label>지점</label>
-    <button class="branch-btn active" id="bbtn-0" onclick="switchBranch(0)">남천점</button>
-    <button class="branch-btn" id="bbtn-1" onclick="switchBranch(1)">서면점</button>
-    <button class="branch-btn" id="bbtn-2" onclick="switchBranch(2)">부산대점</button>
-  </div>
-  <div class="sep"></div>
-  <div class="page-nav">
-    <button class="nav-arrow" onclick="changePage(-1)">&#8592;</button>
-    <span class="page-label" id="pageLabel"></span>
-    <button class="nav-arrow" onclick="changePage(1)">&#8594;</button>
-  </div>
-  <div class="sep"></div>
-  <button class="tb-btn btn-theme" onclick="openModal(null)">＋ 강습 추가</button>
-  <div class="sep"></div>
-  <div class="view-mode-group">
-    <label style="font-size:0.72rem;color:#555;font-weight:700;">미리보기</label>
-    <button class="view-mode-btn active" id="vmbtn-pdf" onclick="setViewMode('pdf')">📄 PDF</button>
-    <button class="view-mode-btn" id="vmbtn-jpg" onclick="setViewMode('jpg')">🖼 JPG</button>
-  </div>
-  <div class="sep"></div>
-  <button class="tb-btn btn-gray" id="pdfBtn" onclick="downloadPDF()">⬇ PDF 저장</button>
-  <button class="tb-btn btn-gray" id="jpgBtn" onclick="downloadJPG()">⬇ 이미지 저장</button>
-  <div class="sep"></div>
-  <span class="update-label">최근 수정 <span id="lastUpdated">—</span></span>
-</div>
+<div class="cc-layout">
+<aside class="cc-side">
+  <section class="cc-sec management" aria-label="공동 달력 관리">
+    <h2>연도</h2>
+    <div class="management-row">
+      <input id="yearInput" type="number" min="1900" max="2100" step="1" value="2026" aria-label="연도" onchange="changeYear(this.value)">
+      <button type="button" onclick="refreshCalendar()">새로고침</button>
+    </div>
+    <p id="syncStatus" role="status" aria-live="polite">불러오는 중…</p>
+  </section>
 
+  <section class="cc-sec">
+    <h2>강습 종류</h2>
+    <!-- CLASS TYPE TABS -->
+    <div class="class-tabs"></div>
+    <button type="button" class="cc-wide" onclick="openCourseManager()">강습 종류 관리</button>
+  </section>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <section class="cc-sec">
+      <h2>지점</h2>
+      <div class="tb-group">
+        <button class="branch-btn active" id="bbtn-0" onclick="switchBranch(0)">남천점</button>
+        <button class="branch-btn" id="bbtn-1" onclick="switchBranch(1)">서면점</button>
+        <button class="branch-btn" id="bbtn-2" onclick="switchBranch(2)">부산대점</button>
+      </div>
+    </section>
+    <section class="cc-sec">
+      <h2>기간</h2>
+      <div class="page-nav">
+        <button class="nav-arrow" onclick="changePage(-1)" aria-label="이전">&#8592;</button>
+        <span class="page-label" id="pageLabel"></span>
+        <button class="nav-arrow" onclick="changePage(1)" aria-label="다음">&#8594;</button>
+      </div>
+      <button class="tb-btn btn-theme cc-wide" onclick="openModal(null)">＋ 강습 추가</button>
+    </section>
+    <section class="cc-sec">
+      <h2>미리보기</h2>
+      <div class="view-mode-group">
+        <button class="view-mode-btn active" id="vmbtn-pdf" onclick="setViewMode('pdf')">📄 PDF</button>
+        <button class="view-mode-btn" id="vmbtn-jpg" onclick="setViewMode('jpg')">🖼 JPG</button>
+      </div>
+    </section>
+    <section class="cc-sec">
+      <h2>저장</h2>
+      <div class="cc-pair">
+        <button class="tb-btn btn-gray" id="pdfBtn" onclick="downloadPDF()">⬇ PDF 저장</button>
+        <button class="tb-btn btn-gray" id="jpgBtn" onclick="downloadJPG()">⬇ 이미지 저장</button>
+      </div>
+      <span class="update-label">최근 수정 <span id="lastUpdated">—</span></span>
+    </section>
+  </div>
+</aside>
+
+<main class="cc-main">
 <!-- A4 PAGE -->
 <div class="a4-page" id="a4page">
   <div class="month-half" id="half0"></div>
   <div class="bar" id="bar-mid"></div>
   <div class="month-half" id="half1"></div>
+</div>
+</main>
 </div>
 
 <!-- MODAL -->
